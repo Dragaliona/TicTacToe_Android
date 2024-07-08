@@ -23,8 +23,8 @@ public class Game {
     private boolean[] gamePos = new boolean[9];
     private Map<Integer, Integer> btnMap;
 
-    public static int CIRCLE_PATH = android.R.drawable.ic_input_add;
-    public static int CROSS_PATH = android.R.drawable.ic_delete;
+    public static int CIRCLE_PATH = R.drawable.circle;
+    public static int CROSS_PATH = R.drawable.cross;
 
     //Two constructors, for either 1 or 2 players
     public Game(String ply1) {
@@ -101,7 +101,7 @@ public class Game {
                 response.putExtra("finished", true);
                 response.putExtra("tie", false);
                 response.putExtra("winnerName", one.getName());
-
+                response.putExtra("playedTile", CROSS_PATH);
                 return response; //No need to go further
             }
             pOneDeals = false;
@@ -150,6 +150,7 @@ public class Game {
             response.putExtra("finished", true);
             response.putExtra("tie", false);
             response.putExtra("winnerName", two.getName());
+            response.putExtra("playedTile", CIRCLE_PATH);
             return response; //No need to go further
         }
 
@@ -165,7 +166,8 @@ public class Game {
         if(pOneDeals) {
             // Next turn is first's
             response.putExtra("nextPlayer", one.getName());
-            response.putExtra("playedTile", CROSS_PATH); //Player 2 played
+            response.putExtra("playedTile", CIRCLE_PATH); //Player 2 played
+
 
         } else {
             // Next turn is second's
@@ -173,7 +175,7 @@ public class Game {
             if(two.isCPU()) response.putExtra("CPU", true);
 
             response.putExtra("nextPlayer", two.getName());
-            response.putExtra("playedTile", CIRCLE_PATH);
+            response.putExtra("playedTile", CROSS_PATH);
         }
         return response;
     }

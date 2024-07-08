@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,8 +35,12 @@ public class GameActivity extends AppCompatActivity {
                     Intent response = game.Deal(v);
 
                     //Change the current played tile
-                    ImageButton temp2 = (ImageButton) findViewById(v.getId());
-                    temp2.setImageResource(response.getIntExtra("playedTile", android.R.drawable.btn_dialog));
+                    ImageView temp2 = (ImageView) findViewById(v.getId());
+
+                    int tmpInt = response.getIntExtra("playedTile", 0);
+
+                    if(tmpInt != 0) temp2.setImageResource(tmpInt); //Only if img specified
+
 
                     nametag.setText(response.getStringExtra("nextPlayer"));
 
@@ -46,14 +50,14 @@ public class GameActivity extends AppCompatActivity {
                     if(response.getBooleanExtra("CPU", false)) {
                         response = game.Deal(v); //Should not matter what view is thrown
                         int t = response.getIntExtra("tileUsed", -1);
-                        ImageButton temp = null;
+                        ImageView temp = null;
                         if(t != -1) {
-                            temp = (ImageButton) findViewById(t);
+                            temp = (ImageView) findViewById(t);
                         } else {
 
                         }
                         if(temp != null) {
-                            temp.setImageResource(Game.CROSS_PATH);
+                            temp.setImageResource(Game.CIRCLE_PATH);
                         }
                         nametag.setText(response.getStringExtra("nextPlayer"));
                         checkGameStatus(response);
@@ -70,15 +74,15 @@ public class GameActivity extends AppCompatActivity {
         };
 
         //The buttons
-        ImageButton btn0 = (ImageButton) findViewById(R.id.btn0);
-        ImageButton btn1 = (ImageButton) findViewById(R.id.btn1);
-        ImageButton btn2 = (ImageButton) findViewById(R.id.btn2);
-        ImageButton btn3 = (ImageButton) findViewById(R.id.btn3);
-        ImageButton btn4 = (ImageButton) findViewById(R.id.btn4);
-        ImageButton btn5 = (ImageButton) findViewById(R.id.btn5);
-        ImageButton btn6 = (ImageButton) findViewById(R.id.btn6);
-        ImageButton btn7 = (ImageButton) findViewById(R.id.btn7);
-        ImageButton btn8 = (ImageButton) findViewById(R.id.btn8);
+        ImageView btn0 = (ImageView) findViewById(R.id.btn0);
+        ImageView btn1 = (ImageView) findViewById(R.id.btn1);
+        ImageView btn2 = (ImageView) findViewById(R.id.btn2);
+        ImageView btn3 = (ImageView) findViewById(R.id.btn3);
+        ImageView btn4 = (ImageView) findViewById(R.id.btn4);
+        ImageView btn5 = (ImageView) findViewById(R.id.btn5);
+        ImageView btn6 = (ImageView) findViewById(R.id.btn6);
+        ImageView btn7 = (ImageView) findViewById(R.id.btn7);
+        ImageView btn8 = (ImageView) findViewById(R.id.btn8);
 
         btn0.setOnClickListener(ocl);
         btn1.setOnClickListener(ocl);
