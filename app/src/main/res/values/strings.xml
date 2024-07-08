@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Tic Tac Toe</string>
+    <string name="player_win_first">"Congrats! "</string>
+    <string name="player_win_second">" is the winner!"</string>
+    <string name="result_tie">Oh... We\'ve got a tie!</string>
+    <string name="toast_delt_not_empty">You cannot place on a non empty tile!</string>
+    <string name="btn_single">Singleplayer</string>
+    <string name="btn_multi">Multiplayer</string>
+</resources>
