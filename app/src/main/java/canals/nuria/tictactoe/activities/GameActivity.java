@@ -79,16 +79,6 @@ public class GameActivity extends AppCompatActivity {
          * should also take into account the height
          */
 
-        //TODO: Solve bug, tiles loose their current mark (cross, circle) when rotated
-
-        /*
-         * Should look into that ViewModel thing
-         *
-         */
-
-
-        //TODO: Change manual setting of buttons by an observer on MLD of a Map
-
         //The buttons
         btn0 = (ImageView) findViewById(R.id.btn0);
         btn1 = (ImageView) findViewById(R.id.btn1);
