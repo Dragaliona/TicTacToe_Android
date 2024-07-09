@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tres en ralla</string>
+    <string name="player_win_first">¡Enhorabuena! ¡</string>
+    <string name="player_win_second">" es el ganador!"</string>
+    <string name="result_tie">Vaya... Parece que tenemos un empate</string>
+    <string name="toast_delt_not_empty">No puedes jugar una casilla que no está vacía</string>
+    <string name="btn_single">Un jugador</string>
+    <string name="btn_multi">Multijugador</string>
+</resources>
