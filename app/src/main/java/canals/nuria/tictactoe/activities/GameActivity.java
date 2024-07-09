@@ -102,10 +102,11 @@ public class GameActivity extends AppCompatActivity {
 
 
         //Set text for player title by observing the playerName mutable data
+        //TODO: Solve after win player set to null
         gameViewModel.getPlayerName().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                nametag.setText(s);
+                nametag.setText(getText(R.string.text_player_prev) + s);
             }
         });
 

@@ -100,6 +100,7 @@ public class Game {
                 response.putExtra("tie", false);
                 response.putExtra("winnerName", one.getName());
                 response.putExtra("playedTile", CROSS_PATH);
+                response.putExtra("nextPlayer", one.getName()); //So doesn't show player: null
                 return response; //No need to go further
             }
             pOneDeals = false;
@@ -142,13 +143,14 @@ public class Game {
         }
 
 
-        //TODO: Shall make it so it only checks if player 2 or cpu dealt
-        if(checkWin(two.getPos())) {
+        //pOneDeals forces to only check when it just has been player 2's turn
+        if(checkWin(two.getPos()) && pOneDeals) {
             //Player 2 / CPU won
             response.putExtra("finished", true);
             response.putExtra("tie", false);
             response.putExtra("winnerName", two.getName());
             response.putExtra("playedTile", CIRCLE_PATH);
+            response.putExtra("nextPlayer", two.getName()); //So doesn't show player: null
             return response; //No need to go further
         }
 
