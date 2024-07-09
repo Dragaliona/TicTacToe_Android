@@ -28,50 +28,26 @@ public class GameActivity extends AppCompatActivity {
         View.OnClickListener ocl = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: After calling game.deal() should also process whether CPU turn happened
                 
-                //Only deal if the selected place is empty
-                if(game.isPlaceEmpty(v)) {
-                    Intent response = game.Deal(v);
-
-                    //Change the current played tile
-                    ImageView temp2 = (ImageView) findViewById(v.getId());
-
-                    int tmpInt = response.getIntExtra("playedTile", 0);
-
-                    if(tmpInt != 0) temp2.setImageResource(tmpInt); //Only if img specified
-
-
-                    nametag.setText(response.getStringExtra("nextPlayer"));
-
-                    checkGameStatus(response);
-
-                    //CPU's turn (should only happen if player 2 is cpu)
-                    if(response.getBooleanExtra("CPU", false)) {
-                        response = game.Deal(v); //Should not matter what view is thrown
-                        int t = response.getIntExtra("tileUsed", -1);
-                        ImageView temp = null;
-                        if(t != -1) {
-                            temp = (ImageView) findViewById(t);
-                        } else {
-
-                        }
-                        if(temp != null) {
-                            temp.setImageResource(Game.CIRCLE_PATH);
-                        }
-                        nametag.setText(response.getStringExtra("nextPlayer"));
-                        checkGameStatus(response);
-                    }
-
-
-                } else {
-                    Toast.makeText(GameActivity.this, getText(R.string.toast_delt_not_empty), Toast.LENGTH_SHORT).show();
-                }
-                
-                
+                processPlay(v, game, nametag); //I ought to put it in a ViewModel? Don't really know how these work
 
             }
         };
+
+
+        //TODO: Solve bug, when rotated board gets massive
+
+        /*
+         * I suppose it's caused because it's checking the screen width, but it
+         * should also take into account the height
+         */
+
+        //TODO: Solve bug, tiles loose their current mark (cross, circle) when rotated
+
+        /*
+         * Should look into that ViewModel thing
+         *
+         */
 
         //The buttons
         ImageView btn0 = (ImageView) findViewById(R.id.btn0);
@@ -99,6 +75,46 @@ public class GameActivity extends AppCompatActivity {
 
 
 
+    }
+
+    private void processPlay(View v, Game game, TextView nametag) {
+        //Only deal if the selected place is empty
+        if(game.isPlaceEmpty(v)) {
+            Intent response = game.Deal(v);
+
+            //Change the current played tile
+            ImageView temp2 = (ImageView) findViewById(v.getId());
+
+            int tmpInt = response.getIntExtra("playedTile", 0);
+
+            if(tmpInt != 0) temp2.setImageResource(tmpInt); //Only if img specified
+
+
+            nametag.setText(response.getStringExtra("nextPlayer"));
+
+            checkGameStatus(response);
+
+            //CPU's turn (should only happen if player 2 is cpu)
+            if(response.getBooleanExtra("CPU", false)) {
+                response = game.Deal(v); //Should not matter what view is thrown
+                int t = response.getIntExtra("tileUsed", -1);
+                ImageView temp = null;
+                if(t != -1) {
+                    temp = (ImageView) findViewById(t);
+                } else {
+
+                }
+                if(temp != null) {
+                    temp.setImageResource(Game.CIRCLE_PATH);
+                }
+                nametag.setText(response.getStringExtra("nextPlayer"));
+                checkGameStatus(response);
+            }
+
+
+        } else {
+            Toast.makeText(GameActivity.this, getText(R.string.toast_delt_not_empty), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void checkGameStatus(Intent response) {
