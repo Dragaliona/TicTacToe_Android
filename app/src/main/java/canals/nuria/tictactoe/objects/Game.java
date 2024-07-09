@@ -2,9 +2,7 @@ package canals.nuria.tictactoe.objects;
 
 
 import android.content.Intent;
-import android.view.View;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -79,12 +77,12 @@ public class Game {
         return null;
     }
 
-    public boolean isPlaceEmpty(View v) {
+    public boolean isPlaceEmpty(int id) {
 
-        return !gamePos[btnMap.get(v.getId())];
+        return !gamePos[btnMap.get(id)];
     }
 
-    public Intent Deal(View v) {
+    public Intent Deal(int id) {
 
         Intent response = new Intent(); //0: current player name, 1: Resource name of either cross or circle
         boolean justDealt = false; //How then would the game know that player 1 dealt before 2?
@@ -93,8 +91,8 @@ public class Game {
 
         if(pOneDeals) {
             //Player 1 turn
-            one.play(btnMap.get(v.getId()));
-            gamePos[btnMap.get(v.getId())] = true;
+            one.play(btnMap.get(id));
+            gamePos[btnMap.get(id)] = true;
 
             if(checkWin(one.getPos())) {
                 //Player 1 won
@@ -138,8 +136,8 @@ public class Game {
 
         } else if(!pOneDeals && !justDealt) {
             //Player 2 turn
-            two.play(btnMap.get(v.getId()));
-            gamePos[btnMap.get(v.getId())] = true;
+            two.play(btnMap.get(id));
+            gamePos[btnMap.get(id)] = true;
             pOneDeals = true;
         }
 
