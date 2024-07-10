@@ -13,12 +13,12 @@ public class Game {
 
     private static Game gameInstance;
 
-    private Logic logic = null;
-    private Player one = null;
-    private Player two = null;
+    private final Logic logic;
+    private final Player one;
+    private final Player two;
     private boolean inGame;
     private boolean pOneDeals;
-    private boolean[] gamePos = new boolean[9];
+    private final boolean[] gamePos = new boolean[9];
     private Map<Integer, Integer> btnMap;
 
     public static int CIRCLE_PATH = R.drawable.circle;
@@ -204,11 +204,6 @@ public class Game {
         return false;
     }
 
-
-    public boolean isInGame() {
-        return inGame;
-    }
-
     public static Game getGameInstance() {
         return gameInstance;
     }
@@ -218,6 +213,6 @@ public class Game {
     }
 
 
-    //TODO: Add method to reinitiazize and repeat game
+    //TODO: Add method to reinitialize and repeat game
 
 }
