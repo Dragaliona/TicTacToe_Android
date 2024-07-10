@@ -16,21 +16,21 @@ import canals.nuria.tictactoe.objects.Game;
 
 public class GameViewModel extends ViewModel {
 
-    private Logger log;
+    private final Logger log;
 
     private boolean initialized;
 
     private Game game;
-    private MutableLiveData<String> playerName;
-    private MutableLiveData<String> longToastMsg;
-    private MutableLiveData<String> shortToastMsg;
-    private MutableLiveData<Integer> winCase; //0 = tile not empty, 1 = Someone won, 2 = tie
+    private final MutableLiveData<String> playerName;
+    private final MutableLiveData<String> longToastMsg;
+    private final MutableLiveData<String> shortToastMsg;
+    private final MutableLiveData<Integer> winCase; //0 = tile not empty, 1 = Someone won, 2 = tie
 
     //In order for the GameActivity to know it should change a button's image,
     //An array with the button's ID and the drawable ID should be passed
     //0 = Tile, 1 = Resource
-    private MutableLiveData<ArrayList<Integer[]>> playedTile;
-    private ArrayList<Integer[]> playedTileArray;
+    private final MutableLiveData<ArrayList<Integer[]>> playedTile;
+    private final ArrayList<Integer[]> playedTileArray;
 
     public GameViewModel() {
          log = Logger.getLogger(GameViewModel.class.getName());
@@ -112,7 +112,7 @@ public class GameViewModel extends ViewModel {
 
 
         } else {
-            winCase.setValue(0); //Player delt a non valid tile (not empty)
+            winCase.setValue(0); //Player dealt a non valid tile (not empty)
         }
     }
 
