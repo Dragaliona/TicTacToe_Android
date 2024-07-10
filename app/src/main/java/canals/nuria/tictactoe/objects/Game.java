@@ -13,12 +13,12 @@ public class Game {
 
     private static Game gameInstance;
 
-    private Logic logic = null;
-    private Player one = null;
-    private Player two = null;
+    private final Logic logic;
+    private final Player one;
+    private final Player two;
     private boolean inGame;
     private boolean pOneDeals;
-    private boolean[] gamePos = new boolean[9];
+    private final boolean[] gamePos = new boolean[9];
     private Map<Integer, Integer> btnMap;
 
     public static int CIRCLE_PATH = R.drawable.circle;
@@ -100,6 +100,7 @@ public class Game {
                 response.putExtra("tie", false);
                 response.putExtra("winnerName", one.getName());
                 response.putExtra("playedTile", CROSS_PATH);
+                response.putExtra("nextPlayer", one.getName()); //So doesn't show player: null
                 return response; //No need to go further
             }
             pOneDeals = false;
@@ -142,13 +143,15 @@ public class Game {
         }
 
 
-        //TODO: Shall make it so it only checks if player 2 or cpu dealt
-        if(checkWin(two.getPos())) {
+        //pOneDeals forces to only check when it just has been player 2's turn
+        if(checkWin(two.getPos()) && pOneDeals) {
             //Player 2 / CPU won
             response.putExtra("finished", true);
             response.putExtra("tie", false);
-            response.putExtra("winnerName", two.getName());
             response.putExtra("playedTile", CIRCLE_PATH);
+
+            ////So doesn't show player: null and for passing the winner's name
+            response.putExtra("nextPlayer", two.getName());
             return response; //No need to go further
         }
 
@@ -201,11 +204,6 @@ public class Game {
         return false;
     }
 
-
-    public boolean isInGame() {
-        return inGame;
-    }
-
     public static Game getGameInstance() {
         return gameInstance;
     }
@@ -215,6 +213,6 @@ public class Game {
     }
 
 
-    //TODO: Add method to reinitiazize and repeat game
+    //TODO: Add method to reinitialize and repeat game
 
 }

@@ -6,4 +6,8 @@
     <string name="toast_delt_not_empty">You cannot place on a non empty tile!</string>
     <string name="btn_single">Singleplayer</string>
     <string name="btn_multi">Multiplayer</string>
+    <string name="hint_fist_player">Player 1</string>
+    <string name="hint_second_player">Player 2</string>
+    <string name="hint_name">Name</string>
+    <string name="text_player_prev">"Player: "</string>
 </resources>
