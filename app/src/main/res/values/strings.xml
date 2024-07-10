@@ -9,5 +9,5 @@
     <string name="hint_fist_player">Player 1</string>
     <string name="hint_second_player">Player 2</string>
     <string name="hint_name">Name</string>
-    <string name="text_player_prev">Player:</string>
+    <string name="text_player_prev">"Player: "</string>
 </resources>
