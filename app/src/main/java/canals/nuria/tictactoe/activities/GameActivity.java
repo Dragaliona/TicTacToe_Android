@@ -1,10 +1,8 @@
 package canals.nuria.tictactoe.activities;
 
-import android.app.Application;
-import android.arch.lifecycle.Observer;
+
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,29 +11,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import canals.nuria.tictactoe.R;
-import canals.nuria.tictactoe.objects.Game;
 import canals.nuria.tictactoe.viewModels.GameViewModel;
 
 public class GameActivity extends AppCompatActivity {
 
     private Logger log;
     private GameViewModel gameViewModel;
-
-
-    private ImageView btn0;
-    private ImageView btn1;
-    private ImageView btn2;
-    private ImageView btn3;
-    private ImageView btn4;
-    private ImageView btn5;
-    private ImageView btn6;
-    private ImageView btn7;
-    private ImageView btn8;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,16 +37,11 @@ public class GameActivity extends AppCompatActivity {
         gameViewModel.init(intent);
         log.info("ViewModel initialized!");
 
-        TextView nametag = (TextView) findViewById(R.id.txtTurnName);
+        TextView nameTag = findViewById(R.id.txtTurnName);
 
 
 
-        View.OnClickListener ocl = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gameViewModel.processPlay(v.getId());
-            }
-        };
+        View.OnClickListener ocl = v -> gameViewModel.processPlay(v.getId());
 
 
         //TODO: Solve bug, when rotated board gets massive
@@ -73,15 +52,17 @@ public class GameActivity extends AppCompatActivity {
          */
 
         //The buttons
-        btn0 = (ImageView) findViewById(R.id.btn0);
-        btn1 = (ImageView) findViewById(R.id.btn1);
-        btn2 = (ImageView) findViewById(R.id.btn2);
-        btn3 = (ImageView) findViewById(R.id.btn3);
-        btn4 = (ImageView) findViewById(R.id.btn4);
-        btn5 = (ImageView) findViewById(R.id.btn5);
-        btn6 = (ImageView) findViewById(R.id.btn6);
-        btn7 = (ImageView) findViewById(R.id.btn7);
-        btn8 = (ImageView) findViewById(R.id.btn8);
+
+
+        ImageView btn0 = findViewById(R.id.btn0);
+        ImageView btn1 = findViewById(R.id.btn1);
+        ImageView btn2 = findViewById(R.id.btn2);
+        ImageView btn3 = findViewById(R.id.btn3);
+        ImageView btn4 = findViewById(R.id.btn4);
+        ImageView btn5 = findViewById(R.id.btn5);
+        ImageView btn6 = findViewById(R.id.btn6);
+        ImageView btn7 = findViewById(R.id.btn7);
+        ImageView btn8 = findViewById(R.id.btn8);
 
         btn0.setOnClickListener(ocl);
         btn1.setOnClickListener(ocl);
@@ -95,73 +76,54 @@ public class GameActivity extends AppCompatActivity {
 
 
         //Set text for player title by observing the playerName mutable data
-        gameViewModel.getPlayerName().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                nametag.setText(getText(R.string.text_player_prev) + s);
-            }
-        });
+        gameViewModel.getPlayerName().observe(this, s -> nameTag.setText(getText(R.string.text_player_prev) + s));
 
 
         //Observe the Toast texts
-        gameViewModel.getShortToastMsg().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                Toast.makeText(GameActivity.this, s, Toast.LENGTH_SHORT).show();
-            }
-        });
-        gameViewModel.getLongToastMsg().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                Toast.makeText(GameActivity.this, s, Toast.LENGTH_LONG).show();
-            }
-        });
+        gameViewModel.getShortToastMsg().observe(this, s -> Toast.makeText(GameActivity.this, s, Toast.LENGTH_SHORT).show());
+        gameViewModel.getLongToastMsg().observe(this, s -> Toast.makeText(GameActivity.this, s, Toast.LENGTH_LONG).show());
 
         //Observe whether someone won
-        gameViewModel.getWinCase().observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(@Nullable Integer integer) {
-                boolean shouldEnd = false;
+        gameViewModel.getWinCase().observe(this, integer -> {
+            boolean shouldEnd = false;
 
-                switch(integer.intValue()) {
-                    case 0:
-                        //Not any win, just player played a non empty tile
-                        Toast.makeText(GameActivity.this, getText(R.string.toast_delt_not_empty), Toast.LENGTH_SHORT).show();
-                        break;
-                    case 1:
-                        showWin(gameViewModel.getPlayerName().getValue());
-                        shouldEnd = true;
-                        break;
-                    case 2:
-                        showTie();
-                        shouldEnd = true;
-                        break;
-                    default:
-                        log.warning("Unrecognized winCase, standing by...");
-                        break;
-                }
-                if(shouldEnd) finish(); //Todo: Ask for game repeat
+            switch(integer) {
+                case 0:
+                    //Not any win, just player played a non empty tile
+                    Toast.makeText(GameActivity.this, getText(R.string.toast_delt_not_empty), Toast.LENGTH_SHORT).show();
+                    break;
+                case 1:
+                    showWin(gameViewModel.getPlayerName().getValue());
+                    shouldEnd = true;
+                    break;
+                case 2:
+                    showTie();
+                    shouldEnd = true;
+                    break;
+                default:
+                    log.warning("Unrecognized winCase, standing by...");
+                    break;
             }
+            if(shouldEnd) finish(); //Todo: Ask for game repeat
         });
 
         //Observe changes on tiles
-        gameViewModel.getPlayedTile().observe(this, new Observer<ArrayList<Integer[]>>() {
-            @Override
-            public void onChanged(@Nullable ArrayList<Integer[]> integers) {
+        gameViewModel.getPlayedTile().observe(this, integers -> {
 
+            if (integers != null) {
                 for(Integer[] ints : integers) {
                     try {
-                        ImageView button = (ImageView) findViewById(ints[0]);
+                        ImageView button = findViewById(ints[0]);
                         button.setImageResource(ints[1]);
 
                     } catch(NullPointerException e) {
                         log.severe("View ID is invalid");
                     } catch (Exception e) {
-                        new RuntimeException(e);
+                        throw new RuntimeException(e);
                     }
                 }
-
             }
+
         });
 
     }
