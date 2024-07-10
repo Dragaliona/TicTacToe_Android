@@ -148,9 +148,10 @@ public class Game {
             //Player 2 / CPU won
             response.putExtra("finished", true);
             response.putExtra("tie", false);
-            response.putExtra("winnerName", two.getName());
             response.putExtra("playedTile", CIRCLE_PATH);
-            response.putExtra("nextPlayer", two.getName()); //So doesn't show player: null
+
+            ////So doesn't show player: null and for passing the winner's name
+            response.putExtra("nextPlayer", two.getName());
             return response; //No need to go further
         }
 

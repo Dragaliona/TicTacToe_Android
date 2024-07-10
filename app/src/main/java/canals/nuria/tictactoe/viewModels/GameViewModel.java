@@ -2,15 +2,11 @@ package canals.nuria.tictactoe.viewModels;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.Context;
 import android.content.Intent;
-import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import canals.nuria.tictactoe.R;
-import canals.nuria.tictactoe.activities.GameActivity;
 import canals.nuria.tictactoe.objects.Game;
 
 
@@ -28,6 +24,7 @@ public class GameViewModel extends ViewModel {
     private MutableLiveData<String> playerName;
     private MutableLiveData<String> longToastMsg;
     private MutableLiveData<String> shortToastMsg;
+    private MutableLiveData<Integer> winCase; //0 = tile not empty, 1 = Someone won, 2 = tie
 
     //In order for the GameActivity to know it should change a button's image,
     //An array with the button's ID and the drawable ID should be passed
@@ -43,6 +40,7 @@ public class GameViewModel extends ViewModel {
          longToastMsg = new MutableLiveData<>();
          shortToastMsg = new MutableLiveData<>();
          playedTileArray = new ArrayList<>();
+         winCase = new MutableLiveData<>();
          initialized = false;
     }
 
@@ -79,7 +77,11 @@ public class GameViewModel extends ViewModel {
         return playedTile;
     }
 
-    public void processPlay(int id, Context context) {
+    public MutableLiveData<Integer> getWinCase() {
+        return winCase;
+    }
+
+    public void processPlay(int id) {
 
         //Only deal if the selected place is empty
         if(game.isPlaceEmpty(id)) {
@@ -93,7 +95,7 @@ public class GameViewModel extends ViewModel {
             }
             playerName.setValue(response.getStringExtra("nextPlayer"));
 
-            checkGameStatus(response, context);
+            checkGameStatus(response);
 
             //CPU's turn (should only happen if player 2 is cpu)
             if(response.getBooleanExtra("CPU", false)) {
@@ -105,32 +107,26 @@ public class GameViewModel extends ViewModel {
                 }
 
                 playerName.setValue(response.getStringExtra("nextPlayer"));
-                checkGameStatus(response, context);
+                checkGameStatus(response);
             }
 
 
         } else {
-            shortToastMsg.setValue((String) context.getText(R.string.toast_delt_not_empty));
+            winCase.setValue(0); //Player delt a non valid tile (not empty)
         }
     }
 
-    private void checkGameStatus(Intent response, Context context) {
+    private void checkGameStatus(Intent response) {
         //Check if game has finished
         if(response.getBooleanExtra("finished", false)) {
             if(!response.getBooleanExtra("tie", false)) {
-                longToastMsg.setValue(context.getText(R.string.player_win_first) +
-                        response.getStringExtra("winnerName") +
-                        context.getText(R.string.player_win_second));
-
+                //playerName.setValue(response.getStringExtra("nextPlayer"));
+                winCase.setValue(1); //Someone won!
             } else {
-                longToastMsg.setValue((String) context.getText(R.string.result_tie));
+                winCase.setValue(2); //Tie!
             }
         }
 
-    }
-
-    public boolean isGameInProgress() {
-        return game.isInGame();
     }
 }
 

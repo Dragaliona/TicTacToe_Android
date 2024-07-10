@@ -60,14 +60,7 @@ public class GameActivity extends AppCompatActivity {
         View.OnClickListener ocl = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                gameViewModel.processPlay(v.getId(), GameActivity.this);
-
-                //Exit if finished game
-                if(!gameViewModel.isGameInProgress()) {
-                    finish(); //Todo: Ask for game repeat
-                }
-
+                gameViewModel.processPlay(v.getId());
             }
         };
 
@@ -124,6 +117,33 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+        //Observe whether someone won
+        gameViewModel.getWinCase().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                boolean shouldEnd = false;
+
+                switch(integer.intValue()) {
+                    case 0:
+                        //Not any win, just player played a non empty tile
+                        Toast.makeText(GameActivity.this, getText(R.string.toast_delt_not_empty), Toast.LENGTH_SHORT).show();
+                        break;
+                    case 1:
+                        showWin(gameViewModel.getPlayerName().getValue());
+                        shouldEnd = true;
+                        break;
+                    case 2:
+                        showTie();
+                        shouldEnd = true;
+                        break;
+                    default:
+                        log.warning("Unrecognized winCase, standing by...");
+                        break;
+                }
+                if(shouldEnd) finish(); //Todo: Ask for game repeat
+            }
+        });
+
         //Observe changes on tiles
         gameViewModel.getPlayedTile().observe(this, new Observer<ArrayList<Integer[]>>() {
             @Override
@@ -145,6 +165,17 @@ public class GameActivity extends AppCompatActivity {
         });
 
     }
+
+    private void showWin(String name) {
+        Toast.makeText(this, getText(R.string.player_win_first) +
+                name +
+                getText(R.string.player_win_second), Toast.LENGTH_LONG).show();
+    }
+
+    private void showTie() {
+        Toast.makeText(this, getText(R.string.result_tie), Toast.LENGTH_LONG).show();
+    }
+
 
 
 }
