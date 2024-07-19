@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     dialog.dismiss();
                     name2 = input.getText().toString();
-                    if(name2.equals("")) name2 = (String) getText(R.string.hint_fist_player);
+                    if(name2.equals("")) name2 = (String) getText(R.string.hint_second_player);
                     launchTwoPlayer(name1, name2);
                 }
 
