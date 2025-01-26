@@ -2,6 +2,7 @@ package canals.nuria.tictactoe.objects;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -43,7 +44,8 @@ public class Logic  {
         return logic;
     }
 
-    public boolean hasWon(ArrayList<Integer> a) {
+    @Deprecated
+    public boolean hasWonOld(ArrayList<Integer> a) {
 
         /*
          * The shitty logic consists in if the position array contains at least
@@ -64,7 +66,14 @@ public class Logic  {
         return false;
     }
 
-
+    // https://stackoverflow.com/a/16524945
+    public boolean hasWon(ArrayList<Integer> a) {
+        boolean hasntWon = true;
+        for(int i = 0; hasntWon && i < win.size(); i++) {
+            if(a.containsAll(Arrays.asList(win.get(i)))) hasntWon = false;
+        }
+        return !hasntWon;
+    }
 
 }
 

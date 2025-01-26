@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 name1 = input.getText().toString();
+                if(name1.equals("")) name1 = (String) getText(R.string.hint_fist_player); //If name is empty, default to "Player 1"
                 launchOnePlayer(name1);
 
             }
@@ -112,10 +113,12 @@ public class MainActivity extends AppCompatActivity {
                 if(!player2) {
                     dialog.cancel();
                     name1 = input.getText().toString();
+                    if(name1.equals("")) name1 = (String) getText(R.string.hint_fist_player);
                     showAlertDialog(true);
                 } else {
                     dialog.dismiss();
                     name2 = input.getText().toString();
+                    if(name2.equals("")) name2 = (String) getText(R.string.hint_second_player);
                     launchTwoPlayer(name1, name2);
                 }
 
